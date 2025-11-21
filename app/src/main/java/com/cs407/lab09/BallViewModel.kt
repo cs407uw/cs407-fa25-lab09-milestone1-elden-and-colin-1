@@ -40,8 +40,11 @@ class BallViewModel : ViewModel() {
                 val NS2S = 1f / 1_000_000_000f
                 val dT = (event.timestamp - lastTimestamp) * NS2S
 
-                val xAcc = -event.values[0]     // phone tilt right → ball moves right
-                val yAcc = event.values[1]      // sensor y is reversed
+                // Default speed is very slow, so this boosts it as if the phone was tilted
+                val speedBoost = 64f
+
+                val xAcc = -event.values[0] * speedBoost     // phone tilt right → ball moves right
+                val yAcc = event.values[1] * speedBoost      // sensor y is reversed
 
                 currentBall.updatePositionAndVelocity(xAcc, yAcc, dT)
 
